@@ -20,4 +20,6 @@ var httpServer = http.createServer(app);
 
 if("development" == process.env.NODE_ENV) {
     httpServer.listen(8080);
+}else{
+    httpServer.listen(80);
 }
