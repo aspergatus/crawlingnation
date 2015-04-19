@@ -18,8 +18,4 @@ app.use('/api', api);
 
 var httpServer = http.createServer(app);
 
-if("development" == process.env.NODE_ENV) {
-    httpServer.listen(8080);
-}else{
-    httpServer.listen(80);
-}
+httpServer.listen(8080);
