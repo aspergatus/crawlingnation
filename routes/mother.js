@@ -29,7 +29,7 @@ router.get('/getchildren', function(req, res) {
                      
 function refreshChildren(){
     Object.keys(childrenlist).forEach(function(key){
-        if(Math.floor(new Date() / 1000) - childrenlist[key].lastupdate > 3)
+        if(Math.floor(new Date() / 1000) - childrenlist[key].lastupdate > 60)
             delete childrenlist[key];
     });
 }
