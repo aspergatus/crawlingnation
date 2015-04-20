@@ -12,7 +12,7 @@ var http = require('http');
 var jsonParser = bodyParser.json();
 
 var childrenlist = {};
-setInterval(refreshChildren,3000);
+setInterval(refreshChildren,1000 * 60);
 
 router.get('/registerchild', function(req, res) {
     var port = req.query.port;

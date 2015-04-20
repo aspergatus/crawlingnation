@@ -15,7 +15,7 @@ var http = require('http');
 var jsonParser = bodyParser.json();
 var motherIP = '54.172.128.255:6666';
 
-setInterval(registerchild,1000);
+setInterval(registerchild,1000 * 30);
 
 router.get('/httpget', function(req, res) {
     var targetUrl=req.query.targeturl;
