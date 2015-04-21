@@ -24,7 +24,8 @@ router.get('/httpget', function(req, res) {
     
     var httpModule = http;
     var urlObj = url.parse(targetUrl);
-    if(urlObj.protocol == 'https')
+    console.log(urlObj.protocol);
+    if(urlObj.protocol == 'https:')
         httpModule = https;
 
     
