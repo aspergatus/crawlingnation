@@ -8,9 +8,8 @@ var bodyParser = require('body-parser');
 var router = express.Router();
 var path = require ('path');
 var fs = require("fs");
-var http = require('http');
-var https = require('https');
-var url = require('url');
+var request = require('request');
+var Iconv  = require('iconv').Iconv;
 
 
 
@@ -21,44 +20,48 @@ setInterval(registerchild,1000 * 30);
 
 router.get('/httpget', function(req, res) {
     var targetUrl=req.query.targeturl;
+    var encoding=req.query.encoding;
     
-    var httpModule = http;
-    var urlObj = url.parse(targetUrl);
-    console.log(urlObj.protocol);
-    if(urlObj.protocol == 'https:')
-        httpModule = https;
-
-    
-    httpModule.get(targetUrl, function(response) {
-      var bodyarr = [];
-
-      response.on('data', function(chunk){
-        bodyarr.push(chunk);
-      });
-      response.on('end', function(){
-        res.json({'status':res.statusCode,'body': bodyarr.join('').toString()});
-      });
-    }).on('error', function(e) {
-        console.log("Got error: " + e.message);
-        res.json({'status':res.statusCode,'body': null});
-    });
+    if(encoding==null){
+        request(targetUrl, function (error, response, body) {
+          if (!error && response.statusCode == 200) {
+                res.json({'status':res.statusCode,'body': body});
+          }else{
+                console.log("Got error: " + e.message);
+                res.json({'status':res.statusCode,'body': null});
+          }
+        })
+    }else{
+        request({ 
+        uri: targetUrl,
+        method: 'GET',
+        encoding: 'binary'
+        }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                body = new Buffer(body, 'binary');
+                conv = new Iconv(encoding, 'utf8');
+                body = conv.convert(body).toString();
+                res.json({'status':res.statusCode,'body': body});
+            }else{
+                console.log("Got error: " + e.message);
+                res.json({'status':res.statusCode,'body': null});
+            }
+            
+        });
+    }
 });
 
 function registerchild(){
     var url = 'http://' + motherIP + '/api/registerchild?port=8080'  ;
-    http.get(url, function(response) {
-      var bodyarr = [];
-
-      response.on('data', function(chunk){
-        bodyarr.push(chunk);
-      });
-      response.on('end', function(){
-        var content = JSON.parse(bodyarr.join('').toString());
-        console.log(content.message);
-      });
-    }).on('error', function(e) {
-        console.log("Got error: " + e.message);
-    });
+    
+    request(url, function (error, response, body) {
+          if (!error && response.statusCode == 200) {
+              var content = JSON.parse(body);
+              console.log(content.message); 
+          }else{
+              console.log("Got error: " + e.message);
+          }
+    })
 }
 
 module.exports = router;

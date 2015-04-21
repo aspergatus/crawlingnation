@@ -16,7 +16,8 @@
     "express-session": "^1.9.3",
     "morgan": "~1.0.0",
     "body-parser": "1.10.0",
-    "http":"*"
+    "iconv":"*",
+    "request":"*"
   },
   "author": "",
   "license": "ISC",
