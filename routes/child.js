@@ -23,7 +23,7 @@ router.get('/httpget', function(req, res) {
     var targetUrl=req.query.targeturl;
     
     var httpModule = http;
-    var urlObj = url.parse(urlStr);
+    var urlObj = url.parse(targetUrl);
     if(urlObj.protocol == 'https')
         httpModule = https;
 
