@@ -10,6 +10,7 @@ var path = require ('path');
 var fs = require("fs");
 var request = require('request');
 var Iconv  = require('iconv').Iconv;
+var Browser =  require('zombie');
 
 
 
@@ -51,15 +52,16 @@ router.get('/httpget', function(req, res) {
     }
 });
 
-router.get('uidget',function(req,res){
+router.get('/uidget',function(req,res){
     var uid = req.query.uid;
+    var startTime = new Date();
     
     var browser = new Browser();
     browser.visit('https://www.uid.admin.ch/Detail.aspx?uid_id=' + uid, function() {
         try{
             if(browser.query('#txtName') != null && browser.query('#txtName').value.length > 0 ){
                 var content = {
-                    uid: uid_id,
+                    uid: uid,
                     name: browser.query('#txtName').value,
                     translation: browser.query('#txtHRTranslation').value,
                     street: browser.query('#txtStreet').value,
@@ -71,13 +73,20 @@ router.get('uidget',function(req,res){
                 };
                 //console.log(content);
 
-                setTimeout(function(){
+                var nowTime = new Date();
+                if(nowTime - startTime > 1000){
                     res.json({'status':200,'content': content});
-                },1000);
+                }else{
+                    setTimeout(function(){
+                        res.json({'status':200,'content': content});
+                    },1000 - (nowTime - startTime));
+                }
+                
             }else{
                 res.json({'status':400,'content': null});
             }
         }catch(ex){
+            console.log(ex);
             res.json({'status':400,'content': null, 'message': ex});
         }
     })

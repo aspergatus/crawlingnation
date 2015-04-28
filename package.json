@@ -16,14 +16,17 @@
     "express-session": "^1.9.3",
     "morgan": "~1.0.0",
     "body-parser": "1.10.0",
-    "iconv":"*",
-    "request":"*",
-    "zombie":"*"
+    "iconv": "*",
+    "request": "*",
+    "zombie": "2.5.1"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/aspergatus/crawlingnation/issues"
   },
-  "homepage": "https://github.com/aspergatus/crawlingnation"
+  "homepage": "https://github.com/aspergatus/crawlingnation",
+  "devDependencies": {
+    "zombie": "^4.0.9"
+  }
 }
