@@ -17,7 +17,8 @@
     "morgan": "~1.0.0",
     "body-parser": "1.10.0",
     "iconv":"*",
-    "request":"*"
+    "request":"*",
+    "zombie":"*"
   },
   "author": "",
   "license": "ISC",

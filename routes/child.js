@@ -51,6 +51,38 @@ router.get('/httpget', function(req, res) {
     }
 });
 
+router.get('uidget',function(req,res){
+    var uid = req.query.uid;
+    
+    var browser = new Browser();
+    browser.visit('https://www.uid.admin.ch/Detail.aspx?uid_id=' + uid, function() {
+        try{
+            if(browser.query('#txtName') != null && browser.query('#txtName').value.length > 0 ){
+                var content = {
+                    uid: uid_id,
+                    name: browser.query('#txtName').value,
+                    translation: browser.query('#txtHRTranslation').value,
+                    street: browser.query('#txtStreet').value,
+                    number: browser.query('#txtNumber').value,
+                    postcode: browser.query('#txtPostCode').value,
+                    location: browser.query('#txtLocation').value,
+                    canton: browser.query('#cbxCanton_readonly').childNodes[1].innerHTML,
+                    HRNumber: browser.query('#txtHRNumber').value
+                };
+                //console.log(content);
+
+                setTimeout(function(){
+                    res.json({'status':200,'content': content});
+                },1000);
+            }else{
+                res.json({'status':400,'content': null});
+            }
+        }catch(ex){
+            res.json({'status':400,'content': null, 'message': ex});
+        }
+    })
+});
+
 function registerchild(){
     var url = 'http://' + motherIP + '/api/registerchild?port=8080'  ;
     
